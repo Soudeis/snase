@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /attendance.html
+Disallow: /admin-actualites.html
+
+Sitemap: https://www.snase.org/sitemap.xml

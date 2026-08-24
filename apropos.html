@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>SNASE · À propos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="description" content="L'histoire de SNASE SARL, société de sécurité privée basée à Abéché, Tchad, active depuis 2002." />
+<link rel="canonical" href="https://www.snase.org/apropos.html" />
+<meta name="robots" content="index, follow" />
+<meta property="og:image" content="https://www.snase.org/images/icon.png" />
+<link rel="icon" href="/favicon.ico" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            color: #1a2a38;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        :root {
+            --bleu-snase: #0a3b5e;
+            --bleu-clair: #2a7fb5;
+            --noir: #0b0b0f;
+            --blanc: #ffffff;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 20, 35, 0.80)),
+                        url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .navbar {
+            background: rgba(8, 8, 16, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 14px 0;
+            border-bottom: 3px solid var(--bleu-clair);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: var(--bleu-clair);
+        }
+        .logo small {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: #b6c9db;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links-desktop {
+            display: flex;
+            gap: 28px;
+            font-weight: 500;
+            color: #d6e2ed;
+        }
+        .nav-links-desktop a {
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links-desktop a:hover {
+            color: white;
+        }
+        .nav-links-desktop a.active {
+            color: var(--bleu-clair);
+            border-bottom: 2px solid var(--bleu-clair);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 8px 4px;
+            z-index: 1001;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: white;
+            border-radius: 4px;
+            transition: 0.3s ease;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 320px;
+            height: 100%;
+            background: rgba(8, 12, 22, 0.98);
+            backdrop-filter: blur(16px);
+            box-shadow: 4px 0 40px rgba(0, 0, 0, 0.8);
+            z-index: 2001;
+            padding: 40px 28px 30px;
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-right: 3px solid var(--bleu-clair);
+        }
+        .drawer.open {
+            left: 0;
+        }
+
+        .drawer .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(42, 127, 181, 0.2);
+        }
+        .drawer .drawer-header .drawer-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+        }
+        .drawer .drawer-header .drawer-logo span {
+            color: var(--bleu-clair);
+        }
+        .drawer .drawer-close {
+            font-size: 2.2rem;
+            color: white;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            transition: transform 0.2s;
+        }
+        .drawer .drawer-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .drawer .drawer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+        .drawer .drawer-links a {
+            color: #c8d6e5;
+            font-size: 1.15rem;
+            font-weight: 500;
+            padding: 14px 16px;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s, padding-left 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .drawer .drawer-links a i {
+            width: 24px;
+            color: var(--bleu-clair);
+            font-size: 1.2rem;
+        }
+        .drawer .drawer-links a:hover {
+            background: rgba(42, 127, 181, 0.15);
+            color: white;
+            padding-left: 22px;
+        }
+        .drawer .drawer-links a.active {
+            background: rgba(42, 127, 181, 0.2);
+            color: var(--bleu-clair);
+        }
+
+        .drawer .drawer-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: #7a8b9c;
+        }
+        .drawer .drawer-footer .drawer-contact {
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+        .drawer .drawer-footer .drawer-contact i {
+            width: 20px;
+            color: var(--bleu-clair);
+        }
+        .drawer .drawer-footer .drawer-social {
+            display: flex;
+            gap: 18px;
+            margin-top: 12px;
+        }
+        .drawer .drawer-footer .drawer-social a {
+            color: #b6c9db;
+            font-size: 1.4rem;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .drawer .drawer-footer .drawer-social a:hover {
+            color: var(--bleu-clair);
+            transform: scale(1.1);
+        }
+
+        .hero {
+            padding: 60px 0 60px;
+        }
+        .hero-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-content h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            line-height: 1.15;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            margin-bottom: 4px;
+        }
+        .hero-content h1 .highlight {
+            color: #7fc1f0;
+        }
+        .hero-content .sous-titre {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            line-height: 1.5;
+            max-width: 650px;
+            margin: 8px auto 0;
+            color: #d6e2ed;
+        }
+
+        .contenu-texte {
+            padding: 50px 0 60px;
+            background: #ffffff;
+        }
+
+        .contenu-texte .texte-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #1a2a38;
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .contenu-texte .texte-content .intro {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #eef2f7;
+        }
+
+        .contenu-texte .texte-content h2 {
+            font-size: 1.6rem;
+            color: var(--bleu-snase);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .contenu-texte .texte-content p {
+            margin-bottom: 12px;
+        }
+
+        .contenu-texte .texte-content ul {
+            margin: 8px 0 16px 24px;
+            list-style: none;
+        }
+
+        .contenu-texte .texte-content ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 6px;
+        }
+
+        .contenu-texte .texte-content ul li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--bleu-clair);
+            font-weight: 700;
+        }
+
+        .contenu-texte .texte-content .villes-liste {
+            columns: 3;
+            column-gap: 24px;
+            margin: 8px 0 16px 0;
+            list-style: none;
+        }
+        .contenu-texte .texte-content .villes-liste li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            break-inside: avoid;
+        }
+        .contenu-texte .texte-content .villes-liste li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--bleu-clair);
+            font-weight: 700;
+        }
+
+        .contenu-texte .texte-content .signature {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 2px solid #eef2f7;
+            font-style: italic;
+            color: #4a6a82;
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+            .contenu-texte .texte-content .villes-liste {
+                columns: 2;
+            }
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(5px);
+            color: #d4dee8;
+            padding: 35px 0 25px;
+            border-top: 4px solid var(--bleu-clair);
+        }
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+        }
+        .footer-info a {
+            color: #b6c9db;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-info a:hover {
+            color: white;
+        }
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-social a {
+            font-size: 1.7rem;
+            color: #bbc9d6;
+            transition: 0.2s;
+        }
+        .footer-social a:hover {
+            color: var(--bleu-clair);
+            transform: scale(1.1);
+        }
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            border-top: 1px solid #25323f;
+            padding-top: 20px;
+            color: #7a8b9c;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links-desktop { display: none; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-content .sous-titre { font-size: 1rem; }
+            .contenu-texte .texte-content { font-size: 0.95rem; }
+            .contenu-texte .texte-content h2 { font-size: 1.3rem; }
+            .drawer { width: 290px; left: -310px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-content .sous-titre { font-size: 0.9rem; }
+            .contenu-texte .texte-content { font-size: 0.9rem; }
+            .contenu-texte .texte-content h2 { font-size: 1.1rem; }
+            .contenu-texte .texte-content ul { margin-left: 16px; }
+            .footer .container { flex-direction: column; align-items: center; text-align: center; }
+            .footer-info { justify-content: center; }
+            .drawer { width: 270px; left: -290px; padding: 28px 18px 24px; }
+        }
+
+        @media (min-width: 769px) {
+            .drawer-overlay, .drawer { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg">
+
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">SNASE<span>.</span><small>Société Nasrine de Service &amp; Entretien</small></div>
+                <div class="nav-links-desktop">
+                    <a href="index.html">Accueil</a>
+                    <a href="activites.html">Activités</a>
+                    <a href="apropos.html" class="active">À propos</a>
+                    <a href="confidentialite.html">Confidentialité</a>
+                </div>
+                <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+            </div>
+        </nav>
+
+        <div class="drawer-overlay" id="drawerOverlay"></div>
+        <div class="drawer" id="drawer">
+            <div class="drawer-header">
+                <span class="drawer-logo">SNASE<span>.</span></span>
+                <button class="drawer-close" id="drawerClose">&times;</button>
+            </div>
+            <div class="drawer-links">
+                <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+                <a href="activites.html"><i class="fas fa-shield-alt"></i> Activités</a>
+                <a href="apropos.html" class="active"><i class="fas fa-info-circle"></i> À propos</a>
+                <a href="confidentialite.html"><i class="fas fa-lock"></i> Confidentialité</a>
+            </div>
+             <div class="drawer-footer">
+                <div class="drawer-contact">
+                   <div><a href="mailto:snase.sarl@yahoo.fr"><i class="fas fa-envelope"></i> snase.sarl@yahoo.fr</a></div>
+                    <div><a href="tel:+23566251050"><i class="fas fa-phone-alt"></i> +235 66 25 10 50</a></div>
+                </div>
+                <div class="drawer-social">
+                    <a href="https://www.facebook.com/Snasesarl/"><i class="fab fa-facebook"></i></a>
+                    
+                   
+                </div>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>À <span class="highlight">propos</span></h1>
+                <p class="sous-titre">Découvrez qui nous sommes, notre histoire et nos valeurs</p>
+            </div>
+        </section>
+
+    </div>
+
+    <section class="contenu-texte">
+        <div class="container">
+            <div class="texte-content">
+
+                <p class="intro">
+                    <strong>SNASE</strong> (Société Nasrine de Service et d'Entretien) est une société de
+                    sécurité privée tchadienne, basée à Abéché, région du Ouaddaï, au Nord-Est du Tchad.
+                </p>
+
+                <h2>Notre histoire</h2>
+                <p>
+                    SNASE est une émanation de l'Entreprise Nasrine de Service et d'Entretien (ENASE),
+                    créée le 2 avril 2002 à Abéché par l'autorisation administrative N°1152. Le
+                    23 juillet 2004, ENASE a cédé sa place à SNASE, par l'autorisation administrative
+                    N°248/MCIA/SG/2004 (RCCM N°TOD-B 56).
+                </p>
+                <p>
+                    Le siège social de SNASE se trouve dans le 4<sup>e</sup> arrondissement d'Abéché,
+                    au quartier Ahmat Albadawi, sur la rue de la gendarmerie.
+                </p>
+                <p>
+                    Société à responsabilité limitée, SNASE est l'initiative d'une femme. Au-delà de ses
+                    prestations de services, elle intervient dans le cadre de l'assistance sociale en
+                    versant 10 % de ses revenus à la fondation « Chamsal-Houda », qui s'occupe des enfants
+                    marginaux, des filles-mères, des femmes veuves et des militaires démobilisés, en les
+                    encadrant et en leur créant des emplois.
+                </p>
+
+                <h2>La fondatrice</h2>
+                <p>
+                    SNASE est l'initiative de <strong>Mme Chamsal-Houda Abakar Kadadé</strong>, aujourd'hui
+                    Directrice Générale de l'entreprise. Après l'obtention de son baccalauréat en 1998,
+                    elle s'engage à la radio d'Abéché, à une époque où personne ne s'en chargeait, pour
+                    promouvoir la radio locale, refusant tout salaire pour cette contribution.
+                </p>
+                <p>
+                    Elle est ainsi la première femme à avoir bâti une société de ce type dans la région,
+                    SNASE étant la première société de sécurité et de services créée dans la zone Est du
+                    pays. C'est en son nom que la fondation « Chamsal-Houda » a été créée, à laquelle
+                    l'entreprise consacre 10 % de ses revenus.
+                </p>
+
+                <h2>Notre mission</h2>
+                <p>
+                    SNASE veut apporter sa contribution au développement socio-économique du pays, et
+                    particulièrement de la zone Nord-Est du Tchad, qui porte le poids de la crise du
+                    Darfour, à travers ses prestations de services et le placement de personnel
+                    (gardiennage, nettoyage, transport, manutention, déménagement, location et gestion
+                    de guest-house, restauration, plonge, et autres services annexes).
+                </p>
+
+                <h2>Notre activité principale</h2>
+                <p>
+                    Protection des biens et des personnes : gardiennage, sécurité, protection rapprochée,
+                    transport de fonds ou de valeurs, gestion de centre d'alarme, audit de sécurité,
+                    sécurité intelligente, surveillance, etc.
+                </p>
+
+                <h2>Nos valeurs</h2>
+                <ul>
+                    <li><strong>Rigueur</strong> — un recrutement exigeant et un encadrement strict des équipes</li>
+                    <li><strong>Efficacité</strong> — une performance mesurée sur le terrain, adaptée aux exigences de chaque client</li>
+                    <li><strong>Réactivité</strong> — une capacité d'intervention rapide en cas d'incident</li>
+                    <li><strong>Discrétion et courtoisie</strong> — des qualités attendues de chaque agent</li>
+                    <li><strong>Engagement social</strong> — le soutien continu à la fondation Chamsal-Houda</li>
+                </ul>
+
+                <h2>Notre implantation</h2>
+                <p>
+                    Le siège de SNASE est à Abéché. La société dispose d'agences équipées de relais radio
+                    VHF dans plusieurs autres villes du pays :
+                </p>
+                <ul class="villes-liste">
+                    <li>Iriba</li>
+                    <li>Farchana</li>
+                    <li>Goz-Beïda</li>
+                    <li>N'Djaména</li>
+                    <li>Bagassola</li>
+                    <li>Maro</li>
+                    <li>Hadjer-Hadid</li>
+                    <li>Haraze</li>
+                    <li>Goré</li>
+                    <li>Moundou</li>
+                    <li>Sarh</li>
+                    <li>Biltine</li>
+                    <li>Ati</li>
+                    <li>Bol</li>
+                    <li>Moussoro</li>
+                </ul>
+                <p>
+                    Partout où elle est présente, SNASE collabore étroitement avec les autorités locales
+                    (traditionnelles, politiques et militaires) ainsi qu'avec les comités et associations
+                    œuvrant dans le même domaine, afin de mieux cerner la situation sécuritaire et d'y
+                    répondre efficacement.
+                </p>
+
+                <h2>Nos partenaires</h2>
+                <p>
+                    SNASE travaille avec de nombreux organismes humanitaires et institutions présentes
+                    dans la zone, parmi lesquels : UNHCR, PAM, Unicef, OCHA, PNUD, UNDSS, l'Organisation
+                    Internationale pour les Migrations (OIM), FLM/ACT, le Comité International de la
+                    Croix-Rouge, l'OMS, et bien d'autres organisations gouvernementales et non
+                    gouvernementales.
+                </p>
+
+                <div class="signature">
+                    — L'équipe SNASE
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+   <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <a href="mailto:snase.sarl@yahoo.fr"><i class="fas fa-envelope"></i> snase.sarl@yahoo.fr</a>
+                <a href="tel:+23566251050"><i class="fas fa-phone-alt"></i> +235 66 25 10 50</a>
+                <span><i class="fas fa-map-marker-alt"></i> Abéché, Ouaddaï, Tchad</span>
+                <a href="https://www.facebook.com/Snasesarl/"><i class="fab fa-facebook"></i> SNASE Tchad</a>
+            </div>
+            <div class="footer-social">
+               
+                
+            <div class="footer-copy">
+                &copy; 2026 SNASE SARL · Tchad · Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburgerBtn');
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('drawerOverlay');
+        const closeBtn = document.getElementById('drawerClose');
+
+        function openDrawer() {
+            drawer.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openDrawer);
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDrawer();
+        });
+    </script>
+
+</body>
+</html>

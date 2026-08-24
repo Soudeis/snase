@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Pointage — SNASE</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- ECRAN DE CONNEXION -->
+<!-- ============================================================ -->
+<section id="screen-login" class="screen screen--center is-active">
+  <div class="login-card">
+    <div class="badge-mark">
+      <span class="badge-mark__ring"></span>
+      <span class="badge-mark__dot"></span>
+    </div>
+    <p class="eyebrow">Système de pointage</p>
+    <h1>SNASE</h1>
+    <form id="login-form" class="login-form">
+      <label class="field">
+        <span>Identifiant</span>
+        <input type="text" id="login-username" autocomplete="username" required />
+      </label>
+      <label class="field">
+        <span>Mot de passe</span>
+        <input type="password" id="login-password" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="btn btn--primary btn--block">Se connecter</button>
+      <button type='reset' class="btn-espace-hero" onclick="window.location.href='index.html'">
+                  Retour
+                </button>
+      <p id="login-error" class="error-text" hidden></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- APPLICATION PRINCIPALE -->
+<!-- ============================================================ -->
+<section id="screen-app" class="screen">
+
+  <header class="topbar">
+    <div class="topbar__id">
+      <span class="badge-mark badge-mark--sm"><span class="badge-mark__ring"></span><span class="badge-mark__dot"></span></span>
+      <div>
+        <p class="topbar__title">SNASE — Pointage</p>
+        <p class="topbar__user" id="current-user-name">—</p>
+      </div>
+    </div>
+    <button id="logout-btn" class="btn btn--ghost btn--sm">Déconnexion</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab is-active" data-tab="scan">Scanner</button>
+    <button class="tab" data-tab="history">Historique</button>
+  </nav>
+
+  <!-- ---------------- ONGLET SCAN ---------------- -->
+  <div class="tab-panel is-active" data-panel="scan">
+
+    <ol class="stepper">
+      <li class="stepper__step is-active" data-step="1"><span>1</span>Scanner</li>
+      <li class="stepper__step" data-step="2"><span>2</span>Photo</li>
+      <li class="stepper__step" data-step="3"><span>3</span>Confirmer</li>
+    </ol>
+
+    <!-- ÉTAPE 1 : SCAN QR -->
+    <div class="step is-active" data-step-panel="1">
+      <div class="viewfinder" id="qr-viewfinder">
+        <div id="qr-reader"></div>
+        <div class="reticle">
+          <span class="reticle__corner reticle__corner--tl"></span>
+          <span class="reticle__corner reticle__corner--tr"></span>
+          <span class="reticle__corner reticle__corner--bl"></span>
+          <span class="reticle__corner reticle__corner--br"></span>
+          <span class="reticle__scanline"></span>
+        </div>
+      </div>
+      <p class="hint">Présentez le QR code du badge employé devant la caméra</p>
+      <p id="scan-error" class="error-text" hidden></p>
+
+      <div id="employee-preview" class="employee-card" hidden>
+        <div class="employee-card__avatar" id="employee-avatar">?</div>
+        <div class="employee-card__info">
+          <p class="employee-card__name" id="employee-name">—</p>
+          <p class="employee-card__meta" id="employee-meta">—</p>
+        </div>
+        <button id="scan-continue-btn" class="btn btn--primary">Continuer</button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : PHOTO -->
+    <div class="step" data-step-panel="2">
+      <div class="viewfinder" id="photo-viewfinder">
+        <video id="camera-video" autoplay playsinline muted></video>
+        <canvas id="photo-canvas" hidden></canvas>
+        <img id="photo-preview-img" hidden />
+        <div class="reticle">
+          <span class="reticle__corner reticle__corner--tl"></span>
+          <span class="reticle__corner reticle__corner--tr"></span>
+          <span class="reticle__corner reticle__corner--bl"></span>
+          <span class="reticle__corner reticle__corner--br"></span>
+        </div>
+      </div>
+      <p class="hint">Cadrez l'employé puis capturez la photo du pointage</p>
+      <p id="photo-error" class="error-text" hidden></p>
+
+      <div class="step-actions">
+        <button id="back-to-scan-btn" class="btn btn--ghost">Retour</button>
+        <button id="capture-photo-btn" class="btn btn--primary">Capturer la photo</button>
+        <button id="retake-photo-btn" class="btn btn--ghost" hidden>Reprendre</button>
+        <button id="photo-continue-btn" class="btn btn--primary" hidden>Continuer</button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 : CONFIRMATION -->
+    <div class="step" data-step-panel="3">
+      <div class="confirm-card">
+        <img id="confirm-photo" class="confirm-card__photo" />
+        <div class="confirm-card__body">
+          <p class="confirm-card__name" id="confirm-name">—</p>
+          <p class="confirm-card__row"><span>Code</span><strong id="confirm-code">—</strong></p>
+          <p class="confirm-card__row"><span>Date</span><strong id="confirm-date">—</strong></p>
+          <p class="confirm-card__row"><span>Localisation</span><strong id="confirm-location">Localisation en cours…</strong></p>
+        </div>
+      </div>
+      <p id="confirm-error" class="error-text" hidden></p>
+      <p id="confirm-success" class="success-text" hidden></p>
+
+      <div class="step-actions">
+        <button id="back-to-photo-btn" class="btn btn--ghost">Retour</button>
+        <button id="confirm-submit-btn" class="btn btn--accent">Confirmer le pointage</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ---------------- ONGLET HISTORIQUE ---------------- -->
+  <div class="tab-panel" data-panel="history">
+    <div class="history-toolbar">
+      <input type="text" id="history-search" placeholder="Rechercher un employé…" />
+    </div>
+    <p class="hint">Pointages que <strong>vous</strong> avez enregistrés</p>
+    <ul id="history-list" class="history-list"></ul>
+    <p id="history-empty" class="hint" hidden>Aucun pointage pour le moment.</p>
+  </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

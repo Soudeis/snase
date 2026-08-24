@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SNASE · Administration des actualités</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<meta name="robots" content="noindex, nofollow" />
+<style>
+    :root {
+        --bleu-snase: #0a3b5e;
+        --bleu-clair: #2a7fb5;
+        --bg: #f4f7fa;
+        --border: #dce4ec;
+        --text: #1a2a38;
+        --muted: #4a6a82;
+        --danger: #c0392b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+        background: var(--bleu-snase);
+        color: white;
+        padding: 18px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .topbar .logo { font-size: 1.3rem; font-weight: 700; }
+    .topbar .logo span { color: var(--bleu-clair); }
+    .topbar a.back { font-size: 0.9rem; color: #cfe0ee; }
+    .topbar a.back:hover { color: white; }
+
+    .layout {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 20px 60px;
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+        .layout { grid-template-columns: 1fr; }
+    }
+
+    .card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 22px;
+    }
+    .card h2 {
+        font-size: 1.15rem;
+        color: var(--bleu-snase);
+        margin-bottom: 16px;
+    }
+
+    label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 14px 0 6px;
+    }
+    label:first-of-type { margin-top: 0; }
+
+    input[type="text"], input[type="date"], textarea, select {
+        width: 100%;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        background: var(--bg);
+    }
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: var(--bleu-clair);
+        background: white;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+
+    .thumb-preview {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid var(--border);
+        margin-top: 8px;
+        display: none;
+        background: var(--bg);
+    }
+
+    .blocks-list { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .block-item {
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        background: var(--bg);
+        position: relative;
+    }
+    .block-item .block-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--bleu-clair);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .block-item textarea { background: white; }
+    .block-item .remove-block {
+        background: transparent;
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .add-block-row { display: flex; gap: 10px; margin-top: 10px; }
+
+    button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 10px 16px;
+        transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-outline {
+        background: white;
+        border: 2px solid var(--border);
+        color: var(--muted);
+    }
+    .btn-primary {
+        background: var(--bleu-clair);
+        color: white;
+    }
+    .btn-save {
+        background: var(--bleu-snase);
+        color: white;
+        width: 100%;
+        margin-top: 18px;
+        padding: 13px;
+        font-size: 1rem;
+    }
+    .btn-cancel-edit {
+        background: transparent;
+        color: var(--muted);
+        text-decoration: underline;
+        padding: 8px 0;
+        width: 100%;
+        display: none;
+    }
+
+    .form-status {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        min-height: 18px;
+    }
+    .form-status.error { color: var(--danger); }
+    .form-status.success { color: #1a6a3e; }
+
+    .articles-list { display: flex; flex-direction: column; gap: 12px; }
+    .article-row {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+    }
+    .article-row img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 8px;
+        background: var(--bg);
+        flex-shrink: 0;
+    }
+    .article-row .info { flex: 1; min-width: 0; }
+    .article-row .info .title { font-weight: 600; margin-bottom: 2px; }
+    .article-row .info .meta { font-size: 0.8rem; color: var(--muted); }
+    .article-row .actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .article-row .actions button { padding: 7px 12px; font-size: 0.8rem; }
+    .btn-delete { background: #fdecea; color: var(--danger); }
+
+    .empty-state { color: var(--muted); text-align: center; padding: 30px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logo">SNASE<span>.</span> — Administration des actualités</div>
+    <a class="back" href="activites.html"><i class="fas fa-arrow-left"></i> Retour au site</a>
+</div>
+
+<div class="layout">
+
+    <!-- ===== FORMULAIRE ===== -->
+    <div class="card">
+        <h2 id="formTitle">Nouvel article</h2>
+        <form id="newsForm">
+            <label for="title">Titre</label>
+            <input type="text" id="title" required />
+
+            <label for="excerpt">Extrait (résumé affiché en premier)</label>
+            <textarea id="excerpt" required></textarea>
+
+            <label for="tag">Catégorie</label>
+            <select id="tag">
+                <option value="activite">Activité</option>
+                <option value="chantier">Chantier</option>
+                <option value="event">Événement</option>
+            </select>
+
+            <label for="publishDate">Date de publication</label>
+            <input type="date" id="publishDate" required />
+
+            <label for="author">Auteur (optionnel)</label>
+            <input type="text" id="author" placeholder="Ex : Ahmed Hassan" />
+
+            <label for="photoInput">Image</label>
+            <input type="file" id="photoInput" accept="image/*" />
+            <img id="thumbPreview" class="thumb-preview" />
+
+            <label>Contenu détaillé</label>
+            <div class="blocks-list" id="blocksList"></div>
+            <div class="add-block-row">
+                <button type="button" class="btn-outline" id="addParagraphBtn"><i class="fas fa-paragraph"></i> Ajouter un paragraphe</button>
+                <button type="button" class="btn-outline" id="addListBtn"><i class="fas fa-list-ul"></i> Ajouter une liste</button>
+            </div>
+
+            <button type="submit" class="btn-save" id="submitBtn">Publier l'article</button>
+            <button type="button" class="btn-cancel-edit" id="cancelEditBtn">Annuler la modification</button>
+            <p class="form-status" id="formStatus"></p>
+        </form>
+    </div>
+
+    <!-- ===== LISTE DES ARTICLES ===== -->
+    <div class="card">
+        <h2>Articles publiés</h2>
+        <div class="articles-list" id="articlesList">
+            <p class="empty-state">Chargement…</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const API_BASE = "http://api.snase.org:8080";
+
+    const TAG_LABELS = { chantier: 'Chantier', activite: 'Activité', event: 'Événement' };
+
+    let editingId = null;
+    let uploadedImagePath = ""; // rempli apres upload, ou conserve l'existant en edition
+
+    // ------------------------------------------------------------
+    // BLOCS DE CONTENU (paragraphe / liste)
+    // ------------------------------------------------------------
+    const blocksList = document.getElementById('blocksList');
+
+    function addParagraphBlock(text = '') {
+        const block = document.createElement('div');
+        block.className = 'block-item';
+        block.dataset.type = 'paragraph';
+        block.innerHTML = `
+            <div class="block-label"><span>Paragraphe</span><button type="button" class="remove-block">Supprimer</button></div>
+            <textarea class="block-text" placeholder="Texte du paragraphe...">${escapeHtml(text)}</textarea>
+        `;
+        block.querySelector('.remove-block').addEventListener('click', () => block.remove());
+        blocksList.appendChild(block);
+    }
+
+    function addListBlock(items = []) {
+        const block = document.createElement('div');
+        block.className = 'block-item';
+        block.dataset.type = 'list';
+        block.innerHTML = `
+            <div class="block-label"><span>Liste à puces (une ligne = un élément)</span><button type="button" class="remove-block">Supprimer</button></div>
+            <textarea class="block-items" placeholder="Élément 1&#10;Élément 2&#10;Élément 3">${escapeHtml(items.join('\n'))}</textarea>
+        `;
+        block.querySelector('.remove-block').addEventListener('click', () => block.remove());
+        blocksList.appendChild(block);
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str ?? '';
+        return div.innerHTML;
+    }
+
+    document.getElementById('addParagraphBtn').addEventListener('click', () => addParagraphBlock());
+    document.getElementById('addListBtn').addEventListener('click', () => addListBlock());
+
+    function collectBlocks() {
+        const blocks = [];
+        blocksList.querySelectorAll('.block-item').forEach((block) => {
+            if (block.dataset.type === 'paragraph') {
+                const text = block.querySelector('.block-text').value.trim();
+                if (text) blocks.push({ type: 'paragraph', text });
+            } else if (block.dataset.type === 'list') {
+                const items = block.querySelector('.block-items').value
+                    .split('\n')
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                if (items.length) blocks.push({ type: 'list', items });
+            }
+        });
+        return blocks;
+    }
+
+    function loadBlocksFromArticle(contentJson) {
+        blocksList.innerHTML = '';
+        let blocks = [];
+        try {
+            blocks = JSON.parse(contentJson || '{}').blocks || [];
+        } catch (e) {
+            blocks = [];
+        }
+        blocks.forEach((b) => {
+            if (b.type === 'paragraph') addParagraphBlock(b.text || '');
+            else if (b.type === 'list') addListBlock(b.items || []);
+        });
+    }
+
+    // ------------------------------------------------------------
+    // IMAGE
+    // ------------------------------------------------------------
+    const photoInput = document.getElementById('photoInput');
+    const thumbPreview = document.getElementById('thumbPreview');
+
+    photoInput.addEventListener('change', () => {
+        const file = photoInput.files[0];
+        if (!file) return;
+        thumbPreview.src = URL.createObjectURL(file);
+        thumbPreview.style.display = 'block';
+    });
+
+    async function uploadPhotoIfNeeded() {
+        const file = photoInput.files[0];
+        if (!file) return uploadedImagePath; // rien de nouveau : on garde l'existant
+
+        const form = new FormData();
+        form.append('photo', file);
+        const res = await fetch(`${API_BASE}/api/upload`, { method: 'POST', body: form });
+        if (!res.ok) throw new Error("Échec de l'upload de l'image");
+        const data = await res.json();
+        return data.photo_path;
+    }
+
+    // ------------------------------------------------------------
+    // FORMULAIRE : CREATION / MODIFICATION
+    // ------------------------------------------------------------
+    const form = document.getElementById('newsForm');
+    const formStatus = document.getElementById('formStatus');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formTitle = document.getElementById('formTitle');
+
+    function resetForm() {
+        editingId = null;
+        uploadedImagePath = "";
+        form.reset();
+        blocksList.innerHTML = '';
+        thumbPreview.style.display = 'none';
+        thumbPreview.src = '';
+        formTitle.textContent = 'Nouvel article';
+        submitBtn.textContent = "Publier l'article";
+        cancelEditBtn.style.display = 'none';
+        formStatus.textContent = '';
+        formStatus.className = 'form-status';
+    }
+
+    cancelEditBtn.addEventListener('click', resetForm);
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formStatus.textContent = '';
+        formStatus.className = 'form-status';
+        submitBtn.disabled = true;
+
+        try {
+            const imagePath = await uploadPhotoIfNeeded();
+
+            const payload = {
+                title: document.getElementById('title').value.trim(),
+                excerpt: document.getElementById('excerpt').value.trim(),
+                tag: document.getElementById('tag').value,
+                publish_date: document.getElementById('publishDate').value,
+                author: document.getElementById('author').value.trim(),
+                image_path: imagePath || '',
+                content_json: JSON.stringify({ blocks: collectBlocks() }),
+            };
+
+            const url = editingId ? `${API_BASE}/api/news/${editingId}` : `${API_BASE}/api/news`;
+            const method = editingId ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) {
+                const body = await res.json().catch(() => ({}));
+                throw new Error(body.message || `Erreur ${res.status}`);
+            }
+
+            formStatus.textContent = editingId ? 'Article modifié avec succès.' : 'Article publié avec succès.';
+            formStatus.className = 'form-status success';
+            resetForm();
+            loadArticles();
+        } catch (err) {
+            formStatus.textContent = err.message;
+            formStatus.className = 'form-status error';
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+
+    // ------------------------------------------------------------
+    // LISTE DES ARTICLES + EDITION / SUPPRESSION
+    // ------------------------------------------------------------
+    const articlesList = document.getElementById('articlesList');
+
+    async function loadArticles() {
+        try {
+            const res = await fetch(`${API_BASE}/api/news`);
+            const articles = await res.json();
+            renderArticlesList(articles);
+        } catch (err) {
+            articlesList.innerHTML = '<p class="empty-state">Impossible de charger les articles.</p>';
+        }
+    }
+
+    function renderArticlesList(articles) {
+        articlesList.innerHTML = '';
+
+        if (!articles.length) {
+            articlesList.innerHTML = '<p class="empty-state">Aucun article pour le moment.</p>';
+            return;
+        }
+
+        articles.forEach((a) => {
+            const row = document.createElement('div');
+            row.className = 'article-row';
+
+            const img = document.createElement('img');
+            img.src = a.image_path
+                ? `${API_BASE}${a.image_path}`
+                : 'https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=60';
+
+            const info = document.createElement('div');
+            info.className = 'info';
+            info.innerHTML = `
+                <div class="title">${escapeHtml(a.title)}</div>
+                <div class="meta">${TAG_LABELS[a.tag] || a.tag} · ${a.publish_date}</div>
+            `;
+
+            const actions = document.createElement('div');
+            actions.className = 'actions';
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'btn-outline';
+            editBtn.textContent = 'Modifier';
+            editBtn.addEventListener('click', () => startEdit(a));
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.textContent = 'Supprimer';
+            deleteBtn.addEventListener('click', () => deleteArticle(a.id));
+
+            actions.append(editBtn, deleteBtn);
+            row.append(img, info, actions);
+            articlesList.appendChild(row);
+        });
+    }
+
+    function startEdit(article) {
+        editingId = article.id;
+        uploadedImagePath = article.image_path || '';
+
+        document.getElementById('title').value = article.title || '';
+        document.getElementById('excerpt').value = article.excerpt || '';
+        document.getElementById('tag').value = article.tag || 'activite';
+        document.getElementById('publishDate').value = article.publish_date || '';
+        document.getElementById('author').value = article.author || '';
+
+        photoInput.value = '';
+        if (article.image_path) {
+            thumbPreview.src = `${API_BASE}${article.image_path}`;
+            thumbPreview.style.display = 'block';
+        } else {
+            thumbPreview.style.display = 'none';
+        }
+
+        loadBlocksFromArticle(article.content_json);
+
+        formTitle.textContent = `Modifier — ${article.title}`;
+        submitBtn.textContent = 'Enregistrer les modifications';
+        cancelEditBtn.style.display = 'block';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function deleteArticle(id) {
+        if (!confirm('Supprimer définitivement cet article ?')) return;
+        try {
+            const res = await fetch(`${API_BASE}/api/news/${id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error(`Erreur ${res.status}`);
+            if (editingId === id) resetForm();
+            loadArticles();
+        } catch (err) {
+            alert("Impossible de supprimer l'article : " + err.message);
+        }
+    }
+
+    loadArticles();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>SNASE · Actualités</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="description" content="Découvrez les activités de SNASE SARL : gardiennage, patrouilles 24h/24, protection rapprochée et chantiers de sécurité au Tchad." />
+<link rel="canonical" href="https://www.snase.org/activites.html" />
+<meta name="robots" content="index, follow" />
+<meta property="og:title" content="Activités · SNASE SARL" />
+<meta property="og:description" content="Actualités et activités de la société de sécurité SNASE au Tchad." />
+<meta property="og:url" content="https://www.snase.org/activites.html" />
+<meta property="og:image" content="https://www.snase.org/images/icon.png" />
+<link rel="icon" href="/favicon.ico" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            color: #1a2a38;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        :root {
+            --bleu-snase: #0a3b5e;
+            --bleu-clair: #2a7fb5;
+            --noir: #0b0b0f;
+            --blanc: #ffffff;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 20, 35, 0.80)),
+                        url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .navbar {
+            background: rgba(8, 8, 16, 0.92);
+            backdrop-filter: blur(6px);
+            padding: 14px 0;
+            border-bottom: 3px solid var(--bleu-clair);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: var(--bleu-clair);
+        }
+        .logo small {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: #b6c9db;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links-desktop {
+            display: flex;
+            gap: 28px;
+            font-weight: 500;
+            color: #d6e2ed;
+        }
+        .nav-links-desktop a {
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links-desktop a:hover {
+            color: white;
+        }
+        .nav-links-desktop a.active {
+            color: var(--bleu-clair);
+            border-bottom: 2px solid var(--bleu-clair);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 8px 4px;
+            z-index: 1001;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: white;
+            border-radius: 4px;
+            transition: 0.3s ease;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 320px;
+            height: 100%;
+            background: rgba(8, 12, 22, 0.98);
+            backdrop-filter: blur(16px);
+            box-shadow: 4px 0 40px rgba(0, 0, 0, 0.8);
+            z-index: 2001;
+            padding: 40px 28px 30px;
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            border-right: 3px solid var(--bleu-clair);
+        }
+        .drawer.open {
+            left: 0;
+        }
+
+        .drawer .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(42, 127, 181, 0.2);
+        }
+        .drawer .drawer-header .drawer-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+        }
+        .drawer .drawer-header .drawer-logo span {
+            color: var(--bleu-clair);
+        }
+        .drawer .drawer-close {
+            font-size: 2.2rem;
+            color: white;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            transition: transform 0.2s;
+        }
+        .drawer .drawer-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .drawer .drawer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+        .drawer .drawer-links a {
+            color: #c8d6e5;
+            font-size: 1.15rem;
+            font-weight: 500;
+            padding: 14px 16px;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s, padding-left 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .drawer .drawer-links a i {
+            width: 24px;
+            color: var(--bleu-clair);
+            font-size: 1.2rem;
+        }
+        .drawer .drawer-links a:hover {
+            background: rgba(42, 127, 181, 0.15);
+            color: white;
+            padding-left: 22px;
+        }
+        .drawer .drawer-links a.active {
+            background: rgba(42, 127, 181, 0.2);
+            color: var(--bleu-clair);
+        }
+
+        .drawer .drawer-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: #7a8b9c;
+        }
+        .drawer .drawer-footer .drawer-contact {
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+        .drawer .drawer-footer .drawer-contact i {
+            width: 20px;
+            color: var(--bleu-clair);
+        }
+        .drawer .drawer-footer .drawer-social {
+            display: flex;
+            gap: 18px;
+            margin-top: 12px;
+        }
+        .drawer .drawer-footer .drawer-social a {
+            color: #b6c9db;
+            font-size: 1.4rem;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .drawer .drawer-footer .drawer-social a:hover {
+            color: var(--bleu-clair);
+            transform: scale(1.1);
+        }
+
+        .hero {
+            padding: 60px 0 60px;
+        }
+        .hero-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-content h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            line-height: 1.15;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            margin-bottom: 4px;
+        }
+        .hero-content h1 .highlight {
+            color: #7fc1f0;
+        }
+        .hero-content .sous-titre {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            line-height: 1.5;
+            max-width: 650px;
+            margin: 8px auto 0;
+            color: #d6e2ed;
+        }
+
+        /* ============================================================
+                   FILTRES (recherche + date)
+                   ============================================================ */
+        .filtres {
+            padding: 30px 0 10px;
+            background: #ffffff;
+            border-bottom: 2px solid #eef2f7;
+        }
+
+        .filtres .filtres-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filtres .filtres-container .search-box {
+            flex: 2 1 280px;
+            display: flex;
+            align-items: center;
+            background: #f4f7fa;
+            border: 2px solid #dce4ec;
+            border-radius: 40px;
+            padding: 0 18px;
+            transition: border-color 0.2s;
+        }
+
+        .filtres .filtres-container .search-box:focus-within {
+            border-color: var(--bleu-clair);
+        }
+
+        .filtres .filtres-container .search-box i {
+            color: #4a6a82;
+            font-size: 1rem;
+        }
+
+        .filtres .filtres-container .search-box input {
+            border: none;
+            background: transparent;
+            padding: 12px 14px;
+            font-size: 1rem;
+            font-family: inherit;
+            width: 100%;
+            outline: none;
+            color: #1a2a38;
+        }
+
+        .filtres .filtres-container .search-box input::placeholder {
+            color: #8a9aa8;
+        }
+
+        .filtres .filtres-container .date-filter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f4f7fa;
+            border: 2px solid #dce4ec;
+            border-radius: 40px;
+            padding: 0 18px;
+            transition: border-color 0.2s;
+        }
+
+        .filtres .filtres-container .date-filter:focus-within {
+            border-color: var(--bleu-clair);
+        }
+
+        .filtres .filtres-container .date-filter i {
+            color: #4a6a82;
+            font-size: 1rem;
+        }
+
+        .filtres .filtres-container .date-filter input {
+            border: none;
+            background: transparent;
+            padding: 12px 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            color: #1a2a38;
+            width: 150px;
+        }
+
+        .filtres .filtres-container .date-filter input::-webkit-calendar-picker-indicator {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .filtres .filtres-container .btn-reset {
+            background: transparent;
+            border: 2px solid #dce4ec;
+            border-radius: 40px;
+            padding: 10px 22px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: #4a6a82;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filtres .filtres-container .btn-reset:hover {
+            background: var(--bleu-snase);
+            color: white;
+            border-color: var(--bleu-snase);
+        }
+
+        .filtres .filtres-container .result-count {
+            font-size: 0.9rem;
+            color: #4a6a82;
+            font-weight: 500;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* ============================================================
+                   CONTENU NEWS
+                   ============================================================ */
+        .contenu-news {
+            padding: 30px 0 60px;
+            background: #ffffff;
+        }
+
+        .contenu-news .news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contenu-news .news-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #eef2f7;
+            transition: opacity 0.3s ease;
+        }
+
+        .contenu-news .news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .contenu-news .news-item.hidden {
+            display: none;
+        }
+
+        .contenu-news .news-item .news-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            background: #dce4ec;
+            border-radius: 4px;
+        }
+
+        .contenu-news .news-item .news-date {
+            font-size: 0.85rem;
+            color: #4a6a82;
+            margin-top: 8px;
+        }
+
+        .contenu-news .news-item .news-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--bleu-snase);
+            margin: 2px 0 4px;
+        }
+
+        .contenu-news .news-item .news-excerpt {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #1a2a38;
+        }
+
+        .contenu-news .news-item .news-excerpt strong {
+            color: var(--bleu-snase);
+        }
+
+        .contenu-news .news-item .news-full {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #1a2a38;
+            margin-top: 6px;
+        }
+
+        .contenu-news .news-item .news-full p {
+            margin-bottom: 10px;
+        }
+
+        .contenu-news .news-item .news-full ul {
+            margin: 8px 0 10px 24px;
+            list-style: none;
+        }
+
+        .contenu-news .news-item .news-full ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 4px;
+        }
+
+        .contenu-news .news-item .news-full ul li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--bleu-clair);
+            font-weight: 700;
+        }
+
+        .contenu-news .news-item .news-tag {
+            display: inline-block;
+            background: var(--bleu-snase);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 14px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+            align-self: flex-start;
+        }
+
+        .contenu-news .news-item .news-tag.activite {
+            background: #2a7fb5;
+        }
+        .contenu-news .news-item .news-tag.event {
+            background: #0a3b5e;
+        }
+        .contenu-news .news-item .news-tag.chantier {
+            background: #1a6a3e;
+        }
+
+        .contenu-news .no-results {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 1.1rem;
+            color: #4a6a82;
+            display: none;
+        }
+
+        .contenu-news .no-results.show {
+            display: block;
+        }
+
+        .contenu-news .loading-state {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 1rem;
+            color: #4a6a82;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(5px);
+            color: #d4dee8;
+            padding: 35px 0 25px;
+            border-top: 4px solid var(--bleu-clair);
+        }
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+        }
+        .footer-info a {
+            color: #b6c9db;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-info a:hover {
+            color: white;
+        }
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-social a {
+            font-size: 1.7rem;
+            color: #bbc9d6;
+            transition: 0.2s;
+        }
+        .footer-social a:hover {
+            color: var(--bleu-clair);
+            transform: scale(1.1);
+        }
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            border-top: 1px solid #25323f;
+            padding-top: 20px;
+            color: #7a8b9c;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links-desktop {
+                display: none;
+            }
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+            .hero-content .sous-titre {
+                font-size: 1rem;
+            }
+            .filtres .filtres-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filtres .filtres-container .search-box {
+                flex: 1 1 auto;
+            }
+            .filtres .filtres-container .date-filter input {
+                width: 100%;
+            }
+            .filtres .filtres-container .btn-reset {
+                align-self: center;
+            }
+            .contenu-news .news-item .news-image {
+                height: 220px;
+            }
+            .contenu-news .news-item .news-title {
+                font-size: 1.4rem;
+            }
+            .contenu-news .news-item .news-excerpt,
+            .contenu-news .news-item .news-full {
+                font-size: 0.95rem;
+            }
+            .drawer {
+                width: 290px;
+                left: -310px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            .hero-content .sous-titre {
+                font-size: 0.9rem;
+            }
+            .filtres .filtres-container .search-box input {
+                font-size: 0.9rem;
+            }
+            .filtres .filtres-container .date-filter input {
+                font-size: 0.85rem;
+            }
+            .contenu-news .news-item .news-image {
+                height: 170px;
+            }
+            .contenu-news .news-item .news-title {
+                font-size: 1.2rem;
+            }
+            .contenu-news .news-item .news-excerpt,
+            .contenu-news .news-item .news-full {
+                font-size: 0.9rem;
+            }
+            .contenu-news .news-item .news-full ul {
+                margin-left: 16px;
+            }
+            .footer .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-info {
+                justify-content: center;
+            }
+            .drawer {
+                width: 270px;
+                left: -290px;
+                padding: 28px 18px 24px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .drawer-overlay,
+            .drawer {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg">
+
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">SNASE<span>.</span><small>Société Nasrine de Service &amp; Entretien</small></div>
+                <div class="nav-links-desktop">
+                    <a href="index.html">Accueil</a>
+                    <a href="activites.html" class="active">Activités</a>
+                    <a href="apropos.html">À propos</a>
+                    <a href="confidentialite.html">Confidentialité</a>
+                </div>
+                <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+            </div>
+        </nav>
+
+        <div class="drawer-overlay" id="drawerOverlay"></div>
+        <div class="drawer" id="drawer">
+            <div class="drawer-header">
+                <span class="drawer-logo">SNASE<span>.</span></span>
+                <button class="drawer-close" id="drawerClose">&times;</button>
+            </div>
+            <div class="drawer-links">
+                <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+                <a href="activites.html" class="active"><i class="fas fa-shield-alt"></i> Activités</a>
+                <a href="apropos.html"><i class="fas fa-info-circle"></i> À propos</a>
+                <a href="confidentialite.html"><i class="fas fa-lock"></i> Confidentialité</a>
+            </div>
+             <div class="drawer-footer">
+                <div class="drawer-contact">
+                   <div><a href="mailto:snase.sarl@yahoo.fr"><i class="fas fa-envelope"></i> snase.sarl@yahoo.fr</a></div>
+                    <div><a href="tel:+23566251050"><i class="fas fa-phone-alt"></i> +235 66 25 10 50</a></div>
+                </div>
+                <div class="drawer-social">
+                    <a href="https://www.facebook.com/Snasesarl/"><i class="fab fa-facebook"></i></a>
+                    
+                   
+                </div>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="container hero-content">
+                <h1><span class="highlight">Actualités</span></h1>
+                <p class="sous-titre">Suivez nos dernières activités, chantiers et événements</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== FILTRES ===== -->
+    <section class="filtres">
+        <div class="container">
+            <div class="filtres-container">
+
+                <!-- Recherche -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher un article..." />
+                </div>
+
+                <!-- Filtre date -->
+                <div class="date-filter">
+                    <i class="far fa-calendar-alt"></i>
+                    <input type="date" id="dateInput" />
+                </div>
+
+                <!-- Bouton réinitialiser -->
+                <button class="btn-reset" id="resetBtn"><i class="fas fa-undo-alt"></i> Réinitialiser</button>
+
+                <!-- Nombre de résultats -->
+                <span class="result-count" id="resultCount">— articles</span>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTENU NEWS ===== -->
+    <section class="contenu-news">
+        <div class="container">
+
+            <p class="loading-state" id="loadingState">Chargement des actualités…</p>
+
+            <div class="news-grid" id="newsGrid"></div>
+
+            <!-- Message "Aucun résultat" -->
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search" style="font-size: 2rem; color: #dce4ec; display: block; margin-bottom: 10px;"></i>
+                Aucun article ne correspond à vos critères de recherche.
+            </div>
+
+        </div>
+    </section>
+
+   <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <a href="mailto:snase.sarl@yahoo.fr"><i class="fas fa-envelope"></i> snase.sarl@yahoo.fr</a>
+                <a href="tel:+23566251050"><i class="fas fa-phone-alt"></i> +235 66 25 10 50</a>
+                <span><i class="fas fa-map-marker-alt"></i> Abéché, Ouaddaï, Tchad</span>
+                <a href="https://www.facebook.com/Snasesarl/"><i class="fab fa-facebook"></i> SNASE Tchad</a>
+            </div>
+            <div class="footer-social">
+               
+                
+            <div class="footer-copy">
+                &copy; 2026 SNASE SARL · Tchad · Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Adresse de l'API Go. Ajuste si le backend est ailleurs.
+        const API_BASE = "http://api.snase.org:8080";
+
+        // ===== DRAWER =====
+        const hamburger = document.getElementById('hamburgerBtn');
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('drawerOverlay');
+        const closeBtn = document.getElementById('drawerClose');
+
+        function openDrawer() {
+            drawer.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openDrawer);
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDrawer();
+        });
+
+        // ============================================================
+        // CHARGEMENT DES ARTICLES DEPUIS L'API
+        // ============================================================
+        const MONTHS_FR = [
+            'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+        ];
+
+        function formatDateFr(isoDate) {
+            const [year, month, day] = isoDate.split('-').map(Number);
+            if (!year || !month || !day) return isoDate;
+            return `${day} ${MONTHS_FR[month - 1]} ${year}`;
+        }
+
+        const TAG_LABELS = { chantier: 'Chantier', activite: 'Activité', event: 'Événement' };
+
+        let newsItems = [];
+
+        async function loadNews() {
+            const loadingState = document.getElementById('loadingState');
+            try {
+                const res = await fetch(`${API_BASE}/api/news`);
+                if (!res.ok) throw new Error(`Erreur ${res.status}`);
+                const articles = await res.json();
+                loadingState.hidden = true;
+                renderArticles(articles);
+            } catch (err) {
+                loadingState.textContent = "Impossible de charger les actualités pour le moment.";
+            }
+        }
+
+        function renderArticles(articles) {
+            const grid = document.getElementById('newsGrid');
+            grid.innerHTML = '';
+
+            articles.forEach((a) => {
+                const article = document.createElement('article');
+                article.className = 'news-item';
+                article.dataset.date = a.publish_date;
+                article.dataset.title = a.title || '';
+                article.dataset.tag = a.tag || 'activite';
+
+                const img = document.createElement('img');
+                img.className = 'news-image';
+                img.loading = 'lazy';
+                img.alt = a.title || '';
+                img.src = a.image_path
+                    ? `${API_BASE}${a.image_path}`
+                    : 'https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+
+                const tagSpan = document.createElement('span');
+                tagSpan.className = `news-tag ${a.tag || 'activite'}`;
+                tagSpan.textContent = TAG_LABELS[a.tag] || 'Activité';
+
+                const dateSpan = document.createElement('span');
+                dateSpan.className = 'news-date';
+                dateSpan.innerHTML = `<i class="far fa-calendar-alt"></i> ${formatDateFr(a.publish_date)}`;
+
+                const title = document.createElement('h2');
+                title.className = 'news-title';
+                title.textContent = a.title || '';
+
+                const excerpt = document.createElement('p');
+                excerpt.className = 'news-excerpt';
+                excerpt.textContent = a.excerpt || '';
+
+                const full = document.createElement('div');
+                full.className = 'news-full';
+
+                let blocks = [];
+                try {
+                    blocks = JSON.parse(a.content_json || '{}').blocks || [];
+                } catch (e) {
+                    blocks = [];
+                }
+
+                blocks.forEach((block) => {
+                    if (block.type === 'paragraph' && block.text) {
+                        const p = document.createElement('p');
+                        p.textContent = block.text;
+                        full.appendChild(p);
+                    } else if (block.type === 'list' && Array.isArray(block.items)) {
+                        const ul = document.createElement('ul');
+                        block.items.forEach((item) => {
+                            if (!item) return;
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            ul.appendChild(li);
+                        });
+                        full.appendChild(ul);
+                    }
+                });
+
+                article.append(img, tagSpan, dateSpan, title, excerpt, full);
+                grid.appendChild(article);
+            });
+
+            newsItems = document.querySelectorAll('.news-item');
+            filterNews();
+        }
+
+        // ============================================================
+        // FILTRES : RECHERCHE + DATE
+        // ============================================================
+        const searchInput = document.getElementById('searchInput');
+        const dateInput = document.getElementById('dateInput');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultCount = document.getElementById('resultCount');
+        const noResults = document.getElementById('noResults');
+
+        function filterNews() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedDate = dateInput.value;
+
+            let visibleCount = 0;
+
+            newsItems.forEach((item) => {
+                const title = item.dataset.title.toLowerCase();
+                const tag = item.dataset.tag.toLowerCase();
+                const date = item.dataset.date;
+
+                let matchesSearch = true;
+                if (searchTerm) {
+                    matchesSearch = title.includes(searchTerm) || tag.includes(searchTerm);
+                }
+
+                let matchesDate = true;
+                if (selectedDate) {
+                    matchesDate = date === selectedDate;
+                }
+
+                const isVisible = matchesSearch && matchesDate;
+
+                if (isVisible) {
+                    item.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            const total = newsItems.length;
+            resultCount.textContent = visibleCount === total
+                ? `${total} article${total > 1 ? 's' : ''}`
+                : `${visibleCount} article${visibleCount > 1 ? 's' : ''} sur ${total}`;
+
+            noResults.classList.toggle('show', total > 0 && visibleCount === 0);
+        }
+
+        searchInput.addEventListener('input', filterNews);
+        dateInput.addEventListener('change', filterNews);
+
+        resetBtn.addEventListener('click', function () {
+            searchInput.value = '';
+            dateInput.value = '';
+            filterNews();
+        });
+
+        loadNews();
+    </script>
+
+</body>
+</html>
